@@ -2,14 +2,31 @@ import { getMovies } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Home() {
+type GenreSlugPageProps = {
+  params: {
+    slug: string[];
+  };
+};
+
+export default async function GenreSlugPage({ params }: GenreSlugPageProps) {
+  const { slug } = await params;
+
   const movies = await getMovies();
+
+  // Filter movies based on the slug array
+  const selectMovies = movies.filter((movie) => {
+    // Split and trim genres from the movie data
+    const genres = movie.Genre.split(",").map((genre) => genre.trim());
+
+    // Check if every genre in slug is included in the genres of the movie
+    return slug.every((s) => genres.includes(s));
+  });
 
   return (
     <div className="h-full space-y-10 my-20">
       <h1 className="text-center text-3xl font-semibold">Movie List</h1>
       <div className="grid grid-cols-4 max-w-screen-xl gap-5 mx-auto">
-        {movies.map((movie, i) => (
+        {selectMovies.map((movie, i) => (
           <div
             key={i}
             className="relative aspect-square rounded-lg overflow-hidden shadow-lg group flex items-center justify-center"
@@ -29,6 +46,9 @@ export default async function Home() {
           </div>
         ))}
       </div>
+      {selectMovies.length === 0 && (
+        <p className="w-full text-center">No movies</p>
+      )}
     </div>
   );
 }
