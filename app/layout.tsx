@@ -36,7 +36,7 @@ export default async function RootLayout({
   const allCountries = movies.flatMap((movie) =>
     movie.Country.split(',').map((country) => country.trim().replace(/ /g, '-'))
   );
-
+  // membuat array baru dari genreuniq
   const genres = [...new Set(allGenres)];
   const countries = [...new Set(allCountries)];
 

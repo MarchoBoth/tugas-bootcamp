@@ -23,6 +23,7 @@ export default async function MovieDetail(props: MovieDetailProps) {
 
   const genres = movie.Genre.split(',');
   const countries = movie.Country.split(',');
+  const actors = movie.Actors.split(', ');
   return (
     <div className="flex max-w-screen-lg mx-auto h-full items-center justify-center gap-5">
       <div>
@@ -55,7 +56,17 @@ export default async function MovieDetail(props: MovieDetailProps) {
             </span>
           ))}
         </p>
-        <p>Actor : {movie.Actors}</p>
+        <p>
+          Actor :{' '}
+          {actors.map((actor, i) => (
+            <span key={i}>
+              <Link className="text-blue-500" href={`/actors/${actor}`}>
+                {actor}
+              </Link>
+              {i < actor.length - 1 && ', '}
+            </span>
+          ))}
+        </p>
         <p>Language : {movie.Language}</p>
         <p>Director : {movie.Director}</p>
         <p>Plot : {movie.Plot}</p>
